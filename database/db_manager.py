@@ -1,20 +1,22 @@
 import sqlite3
-from datetime import datetime
+import os
 
-DB_PATH = "database/traffic_logs.db"
+DB_PATH = os.path.join(os.path.dirname(__file__), "traffic_logs.db")
+
 
 def init_db():
     conn = sqlite3.connect(DB_PATH)
     c = conn.cursor()
 
     c.execute("""
-    CREATE TABLE IF NOT EXISTS logs(
-        timestamp TEXT,
-        latency INTEGER,
-        bandwidth INTEGER,
-        fault TEXT,
-        decision TEXT
-    )
+        CREATE TABLE IF NOT EXISTS traffic_logs (
+            id INTEGER PRIMARY KEY AUTOINCREMENT,
+            timestamp TEXT,
+            latency INTEGER,
+            bandwidth INTEGER,
+            fault TEXT,
+            decision TEXT
+        )
     """)
 
     conn.commit()
@@ -26,14 +28,9 @@ def log_decision(latency, bandwidth, fault, decision):
     c = conn.cursor()
 
     c.execute("""
-    INSERT INTO logs VALUES (?, ?, ?, ?, ?)
-    """, (
-        datetime.now().strftime("%H:%M:%S"),
-        latency,
-        bandwidth,
-        fault,
-        decision
-    ))
+        INSERT INTO traffic_logs (timestamp, latency, bandwidth, fault, decision)
+        VALUES (datetime('now'), ?, ?, ?, ?)
+    """, (latency, bandwidth, fault, decision))
 
     conn.commit()
     conn.close()
