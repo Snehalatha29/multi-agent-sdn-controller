@@ -8,6 +8,8 @@ from ryu.lib.packet import packet, ethernet
 from ryu.lib.packet import ether_types
 
 import random
+import sqlite3   # requirement for database operations
+
 
 # --- Multi-Agent Imports ---
 from agents.latency_agent import LatencyAgent
@@ -35,7 +37,7 @@ class MultiAgentController(app_manager.RyuApp):
         # Initialize Database
         init_db()
 
-        self.logger.info("🚀 Multi-Agent SDN Controller Started")
+        self.logger.info(" Multi-Agent SDN Controller Started")
 
     # Install default flow rule
     @set_ev_cls(ofp_event.EventOFPSwitchFeatures, CONFIG_DISPATCHER)

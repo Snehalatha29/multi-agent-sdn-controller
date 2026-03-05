@@ -73,6 +73,21 @@ def dashboard():
 
     st.subheader("📈 Performance Graph")
     st.line_chart(df[["latency", "bandwidth"]])
+    st.subheader("📊 SDN Comparison Table")
+
+    comparison_data = {
+        "Metric": ["Average Latency (ms)", "Packet Loss (%)", "Throughput (Gbps)"],
+        "Traditional SDN": [0.712, 0, 13.8],
+        "Multi-Agent SDN": [0.305, 0, 13.2]
+    }
+
+    comparison_df = pd.DataFrame(comparison_data)
+    st.table(comparison_df)
+
+    st.subheader("📈 SDN vs Multi-Agent Performance")
+
+    chart_df = comparison_df.set_index("Metric")
+    st.bar_chart(chart_df)
 
 
 # ---------------- MAIN ----------------
